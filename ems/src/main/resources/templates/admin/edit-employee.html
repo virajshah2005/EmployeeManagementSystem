@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Employee</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body class="futuristic-bg">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="/admin/admin-dashboard">
+                <i class="bi bi-people-fill"></i> EMS Admin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/admin-dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/admin/employee-list">Employees</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/leave-requests">Leaves</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/salary-dashboard">Payroll</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/reports-analytics">Reports</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1"></i> Admin
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form th:action="@{/logout}" method="post" class="dropdown-item">
+                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                    <button type="submit" class="btn btn-link text-decoration-none w-100 text-start">
+                                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="glass-card p-4 animate-fade">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="mb-0">Edit Employee</h2>
+                        <a href="/admin/employee-list" class="btn btn-outline-light">
+                            <i class="bi bi-arrow-left me-1"></i> Back to List
+                        </a>
+                    </div>
+                    
+                    <form th:action="@{/admin/edit-employee(id=${employee.id})}" th:object="${employeeDto}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        
+                        <div class="row g-3">
+                            <!-- Personal Information -->
+                            <div class="col-md-6">
+                                <div class="glass-card p-3 h-100">
+                                    <h5 class="mb-3 text-primary">
+                                        <i class="bi bi-person-lines-fill me-2"></i>Personal Information
+                                    </h5>
+                                    <div class="mb-3">
+                                        <label class="form-label">Employee ID</label>
+                                        <input class="form-control-plaintext" readonly th:value="${employee.id}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">First Name</label>
+                                        <input class="form-control" th:field="*{firstName}" required>
+                                        <p th:errors="*{firstName}" class="text-danger mt-1"></p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Last Name</label>
+                                        <input class="form-control" th:field="*{lastName}" required>
+                                        <p th:errors="*{lastName}" class="text-danger mt-1"></p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Phone</label>
+                                        <input class="form-control" th:field="*{phone}">
+                                        <p th:errors="*{phone}" class="text-danger mt-1"></p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Address</label>
+                                        <input class="form-control" th:field="*{address}">
+                                        <p th:errors="*{address}" class="text-danger mt-1"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Account Information -->
+                            <div class="col-md-6">
+                                <div class="glass-card p-3 h-100">
+                                    <h5 class="mb-3 text-primary">
+                                        <i class="bi bi-person-badge me-2"></i>Account Information
+                                    </h5>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" th:field="*{email}" required>
+                                        <p th:errors="*{email}" class="text-danger mt-1"></p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Username</label>
+                                        <input class="form-control" th:field="*{username}" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Password (Leave blank to keep unchanged)</label>
+                                        <input type="password" class="form-control" th:field="*{password}">
+                                        <p th:errors="*{password}" class="text-danger mt-1"></p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Role</label>
+                                        <select class="form-select" th:field="*{status}">
+                                            <option value="Intern">Intern</option>
+                                            <option value="Permanent">Permanent</option>
+                                            <option value="Lead">Lead</option>
+                                            <option value="Part-Timer">Part-Timer</option>
+                                            <option value="Inactive">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Document Upload -->
+                            <div class="col-12">
+                                <div class="glass-card p-3">
+                                    <h5 class="mb-3 text-primary">
+                                        <i class="bi bi-file-earmark me-2"></i>Document
+                                    </h5>
+                                    <div class="mb-3">
+                                        <label class="form-label">Current Document</label>
+                                        <p class="text-dark" th:text="${employee.documentName} ? 'Current: ' + ${employee.documentName} : 'No document uploaded'"></p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Upload New Document</label>
+                                        <input type="file" class="form-control" name="document">
+                                        <small class="text-muted">Leave blank to keep current document</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Form Actions -->
+                            <div class="col-12">
+                                <div class="d-flex justify-content-end gap-3">
+                                    <button type="reset" class="btn btn-outline-light">
+                                        <i class="bi bi-arrow-counterclockwise me-1"></i> Reset
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-check-circle me-1"></i> Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
